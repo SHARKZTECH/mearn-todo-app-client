@@ -1,0 +1,90 @@
+import { useState } from "react";
+import { Container, Form, Button } from "react-bootstrap";
+
+const CreateTodo = () => {
+  const [todo, setTodo] = useState({
+    description: "",
+    responsible: "",
+    priority: "",
+    completed: false
+  });
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value =
+      e.target.type === "checkBox" ? e.target.checked : e.target.value;
+
+    setTodo({
+      ...todo,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(todo);
+  };
+
+  return (
+    <Container>
+      <h3>Create New Todo</h3>
+      <Form>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Description"
+            name="description"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Responsible</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Responsible"
+            name="responsible"
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check
+            inline
+            label="Low"
+            type={"radio"}
+            id={`inline-radio-1`}
+            name="priority"
+            value={"low"}
+            checked={todo.priority === "low"}
+            onChange={handleChange}
+          />
+          <Form.Check
+            inline
+            label="Medium"
+            type={"radio"}
+            id={`inline-radio-2`}
+            name="priority"
+            value={"medium"}
+            checked={todo.priority === "medium"}
+            onChange={handleChange}
+          />
+          <Form.Check
+            inline
+            label="High"
+            type={"radio"}
+            id={`inline-radio-3`}
+            name="priority"
+            value={"high"}
+            checked={todo.priority === "high"}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Create Todo
+        </Button>
+      </Form>
+    </Container>
+  );
+};
+export default CreateTodo;
