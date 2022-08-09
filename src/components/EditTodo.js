@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,10 @@ const EditTodo = () => {
     completed: false
   });
 
+  useEffect(() => {
+    getTodo();
+  }, []);
+
   const getTodo = async () => {
     const { data } = await axios.get(
       `http://localhost:5000/todos/${params.id}`
@@ -24,7 +28,6 @@ const EditTodo = () => {
       completed: false
     });
   };
-  getTodo();
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -40,7 +43,10 @@ const EditTodo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (todo.description && todo.responsible && todo.priority) {
-      const res = await axios.post("http://localhost:5000/todos/add", todo);
+      const res = await axios.post(
+        `http://localhost:5000/todos/update/${params.id}`,
+        todo
+      );
       console.log(res);
     } else alert("All fields required");
 
@@ -50,6 +56,8 @@ const EditTodo = () => {
       priority: "",
       completed: false
     });
+
+    getTodo();
   };
 
   return (
@@ -110,7 +118,7 @@ const EditTodo = () => {
           />
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Create Todo
+          Update
         </Button>
       </Form>
     </Container>
