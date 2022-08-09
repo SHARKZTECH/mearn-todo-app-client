@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import axios from "axios";
 
 const CreateTodo = () => {
   const [todo, setTodo] = useState({
@@ -20,9 +21,19 @@ const CreateTodo = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(todo);
+    if (todo.description && todo.responsible && todo.priority) {
+      const res = await axios.post("http://localhost:5000/todos/add", todo);
+      console.log(res);
+    } else alert("All fields required");
+
+    setTodo({
+      description: "",
+      responsible: "",
+      priority: "",
+      completed: false
+    });
   };
 
   return (
